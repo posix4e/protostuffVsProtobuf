@@ -1,45 +1,45 @@
 Allocating: 16 bytes 
-Protostuff:7723807
- ProtoBuff:32250233
+Protostuff:4610485
+ ProtoBuff:33648160
 Allocating: 16 bytes 
-Protostuff:1488
- ProtoBuff:5694
+Protostuff:1131
+ ProtoBuff:7701
 Allocating: 16 bytes 
-Protostuff:389
- ProtoBuff:4367
+Protostuff:421
+ ProtoBuff:4166
 Allocating: 16 bytes 
-Protostuff:240
- ProtoBuff:3724
+Protostuff:289
+ ProtoBuff:4019
 Allocating: 16 bytes 
-Protostuff:243
- ProtoBuff:3522
+Protostuff:285
+ ProtoBuff:3587
 Allocating: 16 bytes 
-Protostuff:230
- ProtoBuff:72082
+Protostuff:250
+ ProtoBuff:3533
 Allocating: 16 bytes 
-Protostuff:234
- ProtoBuff:3336
+Protostuff:269
+ ProtoBuff:3571
 Allocating: 16 bytes 
-Protostuff:205
- ProtoBuff:3239
+Protostuff:260
+ ProtoBuff:3488
 Allocating: 16 bytes 
-Protostuff:206
- ProtoBuff:3161
+Protostuff:257
+ ProtoBuff:3581
 Allocating: 16 bytes 
-Protostuff:209
- ProtoBuff:3228
+Protostuff:301
+ ProtoBuff:3402
 Allocating: 256 bytes 
-Protostuff:200
- ProtoBuff:3180
+Protostuff:296
+ ProtoBuff:3410
 Allocating: 4096 bytes 
-Protostuff:231
- ProtoBuff:4607
+Protostuff:313
+ ProtoBuff:6578
 Allocating: 65536 bytes 
-Protostuff:1865
- ProtoBuff:34246
+Protostuff:919
+ ProtoBuff:40100
 Allocating: 1048576 bytes 
-Protostuff:708
- ProtoBuff:643200
+Protostuff:319
+ ProtoBuff:705689
 Allocating: 16777216 bytes 
-Protostuff:2080
- ProtoBuff:15084509
+Protostuff:1335
+ ProtoBuff:12143553
