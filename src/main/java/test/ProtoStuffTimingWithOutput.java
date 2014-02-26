@@ -11,6 +11,7 @@ public class ProtoStuffTimingWithOutput {
   static ObjectOutputStream objectOutputStream;
 
   public static void main(String args[]) throws IOException {
+
     int capacity = 16;
     comparisonTest(capacity);
     comparisonTest(capacity);
@@ -40,16 +41,52 @@ public class ProtoStuffTimingWithOutput {
   }
 
   private static void comparisonTest(int capacity) throws IOException {
-    System.out.println("Allocating: " + capacity + " bytes ");
     ByteBuffer buffer = ByteBuffer.allocate(capacity);
     dataOutputStream = new ByteArrayOutputStream(capacity * 2);
     objectOutputStream = new ObjectOutputStream(dataOutputStream);
 
-    testProtostuffTime(buffer);
-    testGoogleProtobufTime(buffer);
+    long protoStuffAllocation = testProtostuffCreateTime(buffer);
+    long protoBuffAllocation = testGoogleProtobufCreateTime(buffer);
+    long protoStuffCreateAndWrite = testProtostuffCreateAndWriteTime(buffer);
+    long protoBuffCreateAndWrite = testGoogleProtobufCreateAndWriteTime(buffer);
+
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("For creation of objects of size " + capacity );
+    stringBuilder.append("\tProtostuff:" + protoStuffAllocation);
+    stringBuilder.append(" vs ");
+    stringBuilder.append("\tProtobuff:" + protoBuffAllocation);
+
+    stringBuilder.append("\nFor creation and writing of objects of size " + capacity );
+    stringBuilder.append("\tProtostuff:" + protoStuffCreateAndWrite);
+    stringBuilder.append(" vs ");
+    stringBuilder.append("\tProtobuff:" + protoBuffCreateAndWrite);
+
+    System.out.println(stringBuilder.toString());
+
   }
 
-  private static void testProtostuffTime(ByteBuffer buffer) throws IOException {
+  private static long testGoogleProtobufCreateTime(ByteBuffer buffer) {
+    long begin, end;
+    begin = System.nanoTime();
+
+    for (int i = 0; i != 100; i++) {
+      BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
+    }
+    end = System.nanoTime();
+    return end -begin;
+  }
+
+  private static long testProtostuffCreateTime(ByteBuffer buffer) {
+    long begin, end;
+    begin = System.nanoTime();
+    for (int i = 0; i != 100; i++) {
+      new BigBlob1(buffer);
+    }
+    end = System.nanoTime();
+    return end -begin;
+  }
+
+  private static long testProtostuffCreateAndWriteTime(ByteBuffer buffer) throws IOException {
     long begin, end;
     begin = System.nanoTime();
     BigBlob1 blob1 = new BigBlob1(buffer);
@@ -57,11 +94,11 @@ public class ProtoStuffTimingWithOutput {
     objectOutputStream.flush();
     dataOutputStream.flush();
     end = System.nanoTime();
-    System.out.println("Protostuff:" + (end - begin));
+    return end -begin;
 
   }
 
-  private static void testGoogleProtobufTime(ByteBuffer buffer) throws IOException {
+  private static long testGoogleProtobufCreateAndWriteTime(ByteBuffer buffer) throws IOException {
     long begin;
     long end;
     begin = System.nanoTime();
@@ -70,6 +107,6 @@ public class ProtoStuffTimingWithOutput {
     end = System.nanoTime();
     objectOutputStream.flush();
     dataOutputStream.flush();
-    System.out.println(" ProtoBuff:" + (end - begin));
+    return end -begin;
   }
 }
