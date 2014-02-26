@@ -14,28 +14,16 @@ public class ProtoStuffTimingWithOutput {
 
     int capacity = 16;
     comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
-    comparisonTest(capacity);
 
     capacity *= 16;
     comparisonTest(capacity);
 
     capacity *= 16;
     comparisonTest(capacity);
-
     capacity *= 16;
     comparisonTest(capacity);
-
     capacity *= 16;
     comparisonTest(capacity);
-
     capacity *= 16;
     comparisonTest(capacity);
   }
@@ -44,24 +32,20 @@ public class ProtoStuffTimingWithOutput {
     ByteBuffer buffer = ByteBuffer.allocate(capacity);
     dataOutputStream = new ByteArrayOutputStream(capacity * 2);
     objectOutputStream = new ObjectOutputStream(dataOutputStream);
+    long protoStuffAllocation, protoBuffAllocation, protoStuffCreateAndWrite, protoBuffCreateAndWrite;
+    protoStuffAllocation = 0;
+    protoBuffAllocation = 0;
+    protoStuffCreateAndWrite = 0;
+    protoBuffCreateAndWrite = 0;
 
-    long protoStuffAllocation = testProtostuffCreateTime(buffer);
-    long protoBuffAllocation = testGoogleProtobufCreateTime(buffer);
-    long protoStuffCreateAndWrite = testProtostuffCreateAndWriteTime(buffer);
-    long protoBuffCreateAndWrite = testGoogleProtobufCreateAndWriteTime(buffer);
+    for (int i = 0; i != 10; i++) {
+      protoStuffAllocation += testProtostuffCreateTime(buffer);
+      protoBuffAllocation += testGoogleProtobufCreateTime(buffer);
+      protoStuffCreateAndWrite += testProtostuffCreateAndWriteTime(buffer);
+      protoBuffCreateAndWrite += testGoogleProtobufCreateAndWriteTime(buffer);
+    }
 
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("For creation of objects of size " + capacity );
-    stringBuilder.append("\tProtostuff:" + protoStuffAllocation);
-    stringBuilder.append(" vs ");
-    stringBuilder.append("\tProtobuff:" + protoBuffAllocation);
-
-    stringBuilder.append("\nFor creation and writing of objects of size " + capacity );
-    stringBuilder.append("\tProtostuff:" + protoStuffCreateAndWrite);
-    stringBuilder.append(" vs ");
-    stringBuilder.append("\tProtobuff:" + protoBuffCreateAndWrite);
-
-    System.out.println(stringBuilder.toString());
+    System.out.println("For creation of objects of size " + capacity + "\tProtostuff:" + protoStuffAllocation + " vs " + "\tProtobuff:" + protoBuffAllocation + "\nFor creation and writing of objects of size " + capacity + "\tProtostuff:" + protoStuffCreateAndWrite + " vs " + "\tProtobuff:" + protoBuffCreateAndWrite);
 
   }
 
@@ -70,10 +54,10 @@ public class ProtoStuffTimingWithOutput {
     begin = System.nanoTime();
 
     for (int i = 0; i != 100; i++) {
-      BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
+     BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
     }
     end = System.nanoTime();
-    return end -begin;
+    return end - begin;
   }
 
   private static long testProtostuffCreateTime(ByteBuffer buffer) {
@@ -83,7 +67,7 @@ public class ProtoStuffTimingWithOutput {
       new BigBlob1(buffer);
     }
     end = System.nanoTime();
-    return end -begin;
+    return end - begin;
   }
 
   private static long testProtostuffCreateAndWriteTime(ByteBuffer buffer) throws IOException {
@@ -94,7 +78,7 @@ public class ProtoStuffTimingWithOutput {
     objectOutputStream.flush();
     dataOutputStream.flush();
     end = System.nanoTime();
-    return end -begin;
+    return end - begin;
 
   }
 
@@ -107,6 +91,6 @@ public class ProtoStuffTimingWithOutput {
     end = System.nanoTime();
     objectOutputStream.flush();
     dataOutputStream.flush();
-    return end -begin;
+    return end - begin;
   }
 }

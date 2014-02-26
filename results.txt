@@ -1,31 +1,13 @@
-For creation of objects of size 16	Protostuff:5150957 vs 	Protobuff:35032377
-For creation and writing of objects of size 16	Protostuff:22613952 vs 	Protobuff:14951432
-For creation of objects of size 16	Protostuff:9870 vs 	Protobuff:245496
-For creation and writing of objects of size 16	Protostuff:68719 vs 	Protobuff:79413
-For creation of objects of size 16	Protostuff:12864 vs 	Protobuff:252189
-For creation and writing of objects of size 16	Protostuff:26913 vs 	Protobuff:64977
-For creation of objects of size 16	Protostuff:3003 vs 	Protobuff:229445
-For creation and writing of objects of size 16	Protostuff:25137 vs 	Protobuff:62929
-For creation of objects of size 16	Protostuff:3086 vs 	Protobuff:186545
-For creation and writing of objects of size 16	Protostuff:22579 vs 	Protobuff:60356
-For creation of objects of size 16	Protostuff:3017 vs 	Protobuff:157827
-For creation and writing of objects of size 16	Protostuff:24834 vs 	Protobuff:59477
-For creation of objects of size 16	Protostuff:3064 vs 	Protobuff:128093
-For creation and writing of objects of size 16	Protostuff:28423 vs 	Protobuff:60915
-For creation of objects of size 16	Protostuff:3090 vs 	Protobuff:163760
-For creation and writing of objects of size 16	Protostuff:32530 vs 	Protobuff:63671
-For creation of objects of size 16	Protostuff:3039 vs 	Protobuff:67672
-For creation and writing of objects of size 16	Protostuff:23037 vs 	Protobuff:59045
-For creation of objects of size 16	Protostuff:3249 vs 	Protobuff:54704
-For creation and writing of objects of size 16	Protostuff:21166 vs 	Protobuff:56509
-For creation of objects of size 256	Protostuff:3815 vs 	Protobuff:69519
-For creation and writing of objects of size 256	Protostuff:32948 vs 	Protobuff:59161
-For creation of objects of size 4096	Protostuff:3099 vs 	Protobuff:118584
-For creation and writing of objects of size 4096	Protostuff:41460 vs 	Protobuff:62667
-For creation of objects of size 65536	Protostuff:3069 vs 	Protobuff:2716792
-For creation and writing of objects of size 65536	Protostuff:130500 vs 	Protobuff:287470
-For creation of objects of size 1048576	Protostuff:6800 vs 	Protobuff:38943253
-For creation and writing of objects of size 1048576	Protostuff:666734 vs 	Protobuff:2966773
-Disconnected from the target VM, address: '127.0.0.1:52600', transport: 'socket'
-For creation of objects of size 16777216	Protostuff:5793 vs 	Protobuff:1139593130
-For creation and writing of objects of size 16777216	Protostuff:6887478 vs 	Protobuff:51091713
+For creation of objects of size 16	Protostuff:5394325 vs 	Protobuff:31278991
+For creation and writing of objects of size 16	Protostuff:26699227 vs 	Protobuff:13154731
+For creation of objects of size 256	Protostuff:44741 vs 	Protobuff:572739
+For creation and writing of objects of size 256	Protostuff:248450 vs 	Protobuff:1117785
+For creation of objects of size 4096	Protostuff:42119 vs 	Protobuff:2570859
+For creation and writing of objects of size 4096	Protostuff:355834 vs 	Protobuff:484554
+For creation of objects of size 65536	Protostuff:42877 vs 	Protobuff:22170358
+For creation and writing of objects of size 65536	Protostuff:793299 vs 	Protobuff:4063091
+For creation of objects of size 1048576	Protostuff:42668 vs 	Protobuff:353932090
+For creation and writing of objects of size 1048576	Protostuff:4019203 vs 	Protobuff:37941175
+Disconnected from the target VM, address: '127.0.0.1:35858', transport: 'socket'
+For creation of objects of size 16777216	Protostuff:85908 vs 	Protobuff:9200315716
+For creation and writing of objects of size 16777216	Protostuff:57420824 vs 	Protobuff:648573082
