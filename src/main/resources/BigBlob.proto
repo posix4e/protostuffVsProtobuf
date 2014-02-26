@@ -1,0 +1,5 @@
+package test;
+
+message BigBlob1 {
+ required bytes blob = 1 [ByteBuffer = true];
+}
