@@ -11,33 +11,20 @@ public class ProtoStuffTimingWithOutput {
   static ObjectOutputStream objectOutputStream;
 
   public static void main(String args[]) throws IOException {
-    int capacity = 16;
-    int multiplier = 16;
+    int max_byte_size = 1024 * 1024 * 16;
 
-    if (args.length == 2) {
-      capacity = Integer.parseInt(args[0]);
-      multiplier = Integer.parseInt(args[1]);
+    if (args.length == 1) {
+      max_byte_size = Integer.parseInt(args[0]);
     }
 
+    System.err.println("#bytesize\tprotostufCreateTime\tprotostuffCreateAndWrite\tprotobufCreateTime\tprotobufCreateAndWrite");
     System.out.println("Ignore the top result, the jvm makes it innacurate");
-    comparisonTest(capacity);
-    comparisonTest(capacity);
+    comparisonTest(16, 2);
 
-    capacity *= multiplier;
-    comparisonTest(capacity);
-
-    capacity *= multiplier;
-    comparisonTest(capacity);
-    capacity *= multiplier;
-    comparisonTest(capacity);
-    capacity *= multiplier;
-    comparisonTest(capacity);
-    capacity *= multiplier;
-    comparisonTest(capacity, 10);
-  }
-
-  private static void comparisonTest(int capacity) throws IOException {
-    comparisonTest(capacity, 25);
+    for (int i = 1; i < max_byte_size ; i *=2) {
+      System.out.println(i);
+      comparisonTest(i, 5);
+    }
   }
 
   private static void comparisonTest(int capacity, int runs) throws IOException {
@@ -52,15 +39,12 @@ public class ProtoStuffTimingWithOutput {
     protoBufCreateAndWrite = 0;
 
     for (int i = 0; i != runs; i++) {
+      System.err.print(capacity);
       protoStuffAllocation += testProtostuffCreateTime(buffer);
       protoStuffCreateAndWrite += testProtostuffCreateAndWriteTime(buffer);
       protoBufAllocation += testGoogleProtobufCreateTime(buffer);
       protoBufCreateAndWrite += testGoogleProtobufCreateAndWriteTime(buffer);
-
     }
-
-    System.out.println("For creation of objects of size " + capacity + "\tProtostuff:" + protoStuffAllocation + " vs " + "\tProtobuf:" + protoBufAllocation + "\nFor creation and writing of objects of size " + capacity + "\tProtostuff:" + protoStuffCreateAndWrite + " vs " + "\tProtobuf:" + protoBufCreateAndWrite);
-
   }
 
   private static long testGoogleProtobufCreateTime(ByteBuffer buffer) {
@@ -69,6 +53,7 @@ public class ProtoStuffTimingWithOutput {
 
     BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
     end = System.nanoTime();
+    System.err.print("\t" + (end - begin));
     return end - begin;
   }
 
@@ -77,6 +62,7 @@ public class ProtoStuffTimingWithOutput {
     begin = System.nanoTime();
     new BigBlob1(buffer);
     end = System.nanoTime();
+    System.err.print("\t" + (end - begin));
     return end - begin;
   }
 
@@ -88,6 +74,7 @@ public class ProtoStuffTimingWithOutput {
     objectOutputStream.flush();
     dataOutputStream.flush();
     end = System.nanoTime();
+    System.err.print("\t" + (end - begin));
     return end - begin;
 
   }
@@ -98,9 +85,10 @@ public class ProtoStuffTimingWithOutput {
     begin = System.nanoTime();
     BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
     objectOutputStream.writeObject(blob2);
-    end = System.nanoTime();
     objectOutputStream.flush();
     dataOutputStream.flush();
+    end = System.nanoTime();
+    System.err.println("\t" + (end - begin));
     return end - begin;
   }
 }

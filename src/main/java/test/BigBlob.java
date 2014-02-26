@@ -4,23 +4,29 @@
 package test;
 
 public final class BigBlob {
-  private BigBlob() {}
+  private BigBlob() {
+  }
+
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+
   public interface BigBlob2OrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required bytes blob = 1;
+
     /**
      * <code>required bytes blob = 1;</code>
      */
     boolean hasBlob();
+
     /**
      * <code>required bytes blob = 1;</code>
      */
     com.google.protobuf.ByteString getBlob();
   }
+
   /**
    * Protobuf type {@code test.BigBlob2}
    */
@@ -32,9 +38,13 @@ public final class BigBlob {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private BigBlob2(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private BigBlob2(boolean noInit) {
+      this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+    }
 
     private static final BigBlob2 defaultInstance;
+
     public static BigBlob2 getDefaultInstance() {
       return defaultInstance;
     }
@@ -44,11 +54,13 @@ public final class BigBlob {
     }
 
     private final com.google.protobuf.UnknownFieldSet unknownFields;
+
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
+
     private BigBlob2(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -67,7 +79,7 @@ public final class BigBlob {
               break;
             default: {
               if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+                  extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -89,13 +101,14 @@ public final class BigBlob {
         makeExtensionsImmutable();
       }
     }
+
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return test.BigBlob.internal_static_test_BigBlob2_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return test.BigBlob.internal_static_test_BigBlob2_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               test.BigBlob.BigBlob2.class, test.BigBlob.BigBlob2.Builder.class);
@@ -103,13 +116,13 @@ public final class BigBlob {
 
     public static com.google.protobuf.Parser<BigBlob2> PARSER =
         new com.google.protobuf.AbstractParser<BigBlob2>() {
-      public BigBlob2 parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new BigBlob2(input, extensionRegistry);
-      }
-    };
+          public BigBlob2 parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new BigBlob2(input, extensionRegistry);
+          }
+        };
 
     @java.lang.Override
     public com.google.protobuf.Parser<BigBlob2> getParserForType() {
@@ -120,12 +133,14 @@ public final class BigBlob {
     // required bytes blob = 1;
     public static final int BLOB_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString blob_;
+
     /**
      * <code>required bytes blob = 1;</code>
      */
     public boolean hasBlob() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
+
     /**
      * <code>required bytes blob = 1;</code>
      */
@@ -136,7 +151,9 @@ public final class BigBlob {
     private void initFields() {
       blob_ = com.google.protobuf.ByteString.EMPTY;
     }
+
     private byte memoizedIsInitialized = -1;
+
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
@@ -150,7 +167,7 @@ public final class BigBlob {
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+        throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, blob_);
@@ -159,6 +176,7 @@ public final class BigBlob {
     }
 
     private int memoizedSerializedSize = -1;
+
     public int getSerializedSize() {
       int size = memoizedSerializedSize;
       if (size != -1) return size;
@@ -166,7 +184,7 @@ public final class BigBlob {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, blob_);
+            .computeBytesSize(1, blob_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -174,6 +192,7 @@ public final class BigBlob {
     }
 
     private static final long serialVersionUID = 0L;
+
     @java.lang.Override
     protected java.lang.Object writeReplace()
         throws java.io.ObjectStreamException {
@@ -185,47 +204,56 @@ public final class BigBlob {
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
+
     public static test.BigBlob.BigBlob2 parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
+
     public static test.BigBlob.BigBlob2 parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
+
     public static test.BigBlob.BigBlob2 parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -233,12 +261,21 @@ public final class BigBlob {
       return PARSER.parseFrom(input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return Builder.create();
+    }
+
+    public Builder newBuilderForType() {
+      return newBuilder();
+    }
+
     public static Builder newBuilder(test.BigBlob.BigBlob2 prototype) {
       return newBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() { return newBuilder(this); }
+
+    public Builder toBuilder() {
+      return newBuilder(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
@@ -246,19 +283,20 @@ public final class BigBlob {
       Builder builder = new Builder(parent);
       return builder;
     }
+
     /**
      * Protobuf type {@code test.BigBlob2}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements test.BigBlob.BigBlob2OrBuilder {
+        implements test.BigBlob.BigBlob2OrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
+      getDescriptor() {
         return test.BigBlob.internal_static_test_BigBlob2_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
+      internalGetFieldAccessorTable() {
         return test.BigBlob.internal_static_test_BigBlob2_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
                 test.BigBlob.BigBlob2.class, test.BigBlob.BigBlob2.Builder.class);
@@ -274,10 +312,12 @@ public final class BigBlob {
         super(parent);
         maybeForceBuilderInitialization();
       }
+
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
         }
       }
+
       private static Builder create() {
         return new Builder();
       }
@@ -294,7 +334,7 @@ public final class BigBlob {
       }
 
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
+      getDescriptorForType() {
         return test.BigBlob.internal_static_test_BigBlob2_descriptor;
       }
 
@@ -325,7 +365,7 @@ public final class BigBlob {
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof test.BigBlob.BigBlob2) {
-          return mergeFrom((test.BigBlob.BigBlob2)other);
+          return mergeFrom((test.BigBlob.BigBlob2) other);
         } else {
           super.mergeFrom(other);
           return this;
@@ -343,7 +383,7 @@ public final class BigBlob {
 
       public final boolean isInitialized() {
         if (!hasBlob()) {
-          
+
           return false;
         }
         return true;
@@ -366,34 +406,39 @@ public final class BigBlob {
         }
         return this;
       }
+
       private int bitField0_;
 
       // required bytes blob = 1;
       private com.google.protobuf.ByteString blob_ = com.google.protobuf.ByteString.EMPTY;
+
       /**
        * <code>required bytes blob = 1;</code>
        */
       public boolean hasBlob() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
+
       /**
        * <code>required bytes blob = 1;</code>
        */
       public com.google.protobuf.ByteString getBlob() {
         return blob_;
       }
+
       /**
        * <code>required bytes blob = 1;</code>
        */
       public Builder setBlob(com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
         blob_ = value;
         onChanged();
         return this;
       }
+
       /**
        * <code>required bytes blob = 1;</code>
        */
@@ -416,40 +461,42 @@ public final class BigBlob {
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_test_BigBlob2_descriptor;
+      internal_static_test_BigBlob2_descriptor;
   private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_test_BigBlob2_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
+
   private static com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
+
   static {
     java.lang.String[] descriptorData = {
-      "\n\rBigBlob.proto\022\004test\"\030\n\010BigBlob2\022\014\n\004blo" +
-      "b\030\001 \002(\014"
+        "\n\rBigBlob.proto\022\004test\"\030\n\010BigBlob2\022\014\n\004blo" +
+            "b\030\001 \002(\014"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_test_BigBlob2_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_test_BigBlob2_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_test_BigBlob2_descriptor,
-              new java.lang.String[] { "Blob", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            internal_static_test_BigBlob2_descriptor =
+                getDescriptor().getMessageTypes().get(0);
+            internal_static_test_BigBlob2_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_test_BigBlob2_descriptor,
+                new java.lang.String[]{"Blob",});
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+        .internalBuildGeneratedFileFrom(descriptorData,
+            new com.google.protobuf.Descriptors.FileDescriptor[]{
+            }, assigner);
   }
 
   // @@protoc_insertion_point(outer_class_scope)
