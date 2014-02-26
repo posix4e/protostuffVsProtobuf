@@ -1,13 +1,18 @@
-For creation of objects of size 16	Protostuff:5394325 vs 	Protobuff:31278991
-For creation and writing of objects of size 16	Protostuff:26699227 vs 	Protobuff:13154731
-For creation of objects of size 256	Protostuff:44741 vs 	Protobuff:572739
-For creation and writing of objects of size 256	Protostuff:248450 vs 	Protobuff:1117785
-For creation of objects of size 4096	Protostuff:42119 vs 	Protobuff:2570859
-For creation and writing of objects of size 4096	Protostuff:355834 vs 	Protobuff:484554
-For creation of objects of size 65536	Protostuff:42877 vs 	Protobuff:22170358
-For creation and writing of objects of size 65536	Protostuff:793299 vs 	Protobuff:4063091
-For creation of objects of size 1048576	Protostuff:42668 vs 	Protobuff:353932090
-For creation and writing of objects of size 1048576	Protostuff:4019203 vs 	Protobuff:37941175
-Disconnected from the target VM, address: '127.0.0.1:35858', transport: 'socket'
-For creation of objects of size 16777216	Protostuff:85908 vs 	Protobuff:9200315716
-For creation and writing of objects of size 16777216	Protostuff:57420824 vs 	Protobuff:648573082
+Ignore the top result, the jvm makes it innacurate
+For creation of objects of size 16	Protostuff:6209917 vs 	Protobuf:21109379
+For creation and writing of objects of size 16	Protostuff:29695345 vs 	Protobuf:13036243
+For creation of objects of size 16	Protostuff:5782 vs 	Protobuf:81400
+For creation and writing of objects of size 16	Protostuff:340879 vs 	Protobuf:665311
+For creation of objects of size 256	Protostuff:5748 vs 	Protobuf:88976
+For creation and writing of objects of size 256	Protostuff:326657 vs 	Protobuf:784957
+For creation of objects of size 4096	Protostuff:5708 vs 	Protobuf:151828
+For creation and writing of objects of size 4096	Protostuff:424933 vs 	Protobuf:1092366
+For creation of objects of size 65536	Protostuff:7492 vs 	Protobuf:1534836
+For creation and writing of objects of size 65536	Protostuff:800778 vs 	Protobuf:6219636
+For creation of objects of size 1048576	Protostuff:20794 vs 	Protobuf:67443992
+For creation and writing of objects of size 1048576	Protostuff:10170547 vs 	Protobuf:108414274
+For creation of objects of size 16777216	Protostuff:11870 vs 	Protobuf:103469723
+For creation and writing of objects of size 16777216	Protostuff:63003656 vs 	Protobuf:1182687168
+
+Process finished with exit code 0
+

@@ -11,41 +11,55 @@ public class ProtoStuffTimingWithOutput {
   static ObjectOutputStream objectOutputStream;
 
   public static void main(String args[]) throws IOException {
-
     int capacity = 16;
+    int multiplier = 16;
+
+    if (args.length == 2) {
+      capacity = Integer.parseInt(args[0]);
+      multiplier = Integer.parseInt(args[1]);
+    }
+
+    System.out.println("Ignore the top result, the jvm makes it innacurate");
+    comparisonTest(capacity);
     comparisonTest(capacity);
 
-    capacity *= 16;
+    capacity *= multiplier;
     comparisonTest(capacity);
 
-    capacity *= 16;
+    capacity *= multiplier;
     comparisonTest(capacity);
-    capacity *= 16;
+    capacity *= multiplier;
     comparisonTest(capacity);
-    capacity *= 16;
+    capacity *= multiplier;
     comparisonTest(capacity);
-    capacity *= 16;
-    comparisonTest(capacity);
+    capacity *= multiplier;
+    comparisonTest(capacity, 10);
   }
 
   private static void comparisonTest(int capacity) throws IOException {
+    comparisonTest(capacity, 25);
+  }
+
+  private static void comparisonTest(int capacity, int runs) throws IOException {
+
     ByteBuffer buffer = ByteBuffer.allocate(capacity);
     dataOutputStream = new ByteArrayOutputStream(capacity * 2);
     objectOutputStream = new ObjectOutputStream(dataOutputStream);
-    long protoStuffAllocation, protoBuffAllocation, protoStuffCreateAndWrite, protoBuffCreateAndWrite;
+    long protoStuffAllocation, protoBufAllocation, protoStuffCreateAndWrite, protoBufCreateAndWrite;
     protoStuffAllocation = 0;
-    protoBuffAllocation = 0;
+    protoBufAllocation = 0;
     protoStuffCreateAndWrite = 0;
-    protoBuffCreateAndWrite = 0;
+    protoBufCreateAndWrite = 0;
 
-    for (int i = 0; i != 10; i++) {
+    for (int i = 0; i != runs; i++) {
       protoStuffAllocation += testProtostuffCreateTime(buffer);
-      protoBuffAllocation += testGoogleProtobufCreateTime(buffer);
       protoStuffCreateAndWrite += testProtostuffCreateAndWriteTime(buffer);
-      protoBuffCreateAndWrite += testGoogleProtobufCreateAndWriteTime(buffer);
+      protoBufAllocation += testGoogleProtobufCreateTime(buffer);
+      protoBufCreateAndWrite += testGoogleProtobufCreateAndWriteTime(buffer);
+
     }
 
-    System.out.println("For creation of objects of size " + capacity + "\tProtostuff:" + protoStuffAllocation + " vs " + "\tProtobuff:" + protoBuffAllocation + "\nFor creation and writing of objects of size " + capacity + "\tProtostuff:" + protoStuffCreateAndWrite + " vs " + "\tProtobuff:" + protoBuffCreateAndWrite);
+    System.out.println("For creation of objects of size " + capacity + "\tProtostuff:" + protoStuffAllocation + " vs " + "\tProtobuf:" + protoBufAllocation + "\nFor creation and writing of objects of size " + capacity + "\tProtostuff:" + protoStuffCreateAndWrite + " vs " + "\tProtobuf:" + protoBufCreateAndWrite);
 
   }
 
@@ -53,9 +67,7 @@ public class ProtoStuffTimingWithOutput {
     long begin, end;
     begin = System.nanoTime();
 
-    for (int i = 0; i != 100; i++) {
-     BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
-    }
+    BigBlob.BigBlob2.newBuilder().setBlob(com.google.protobuf.ByteString.copyFrom(buffer.array())).build();
     end = System.nanoTime();
     return end - begin;
   }
@@ -63,9 +75,7 @@ public class ProtoStuffTimingWithOutput {
   private static long testProtostuffCreateTime(ByteBuffer buffer) {
     long begin, end;
     begin = System.nanoTime();
-    for (int i = 0; i != 100; i++) {
-      new BigBlob1(buffer);
-    }
+    new BigBlob1(buffer);
     end = System.nanoTime();
     return end - begin;
   }
