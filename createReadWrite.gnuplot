@@ -8,6 +8,6 @@ set ytic auto                          # set ytics automatically
 set title "Protostuff vs Protobuf latency for object creation and write"
 set xlabel "ByteSize"
 set ylabel "Latency"
-plot    "foo.dat" using 1:4 title 'protostuffCreateWriteRead' with linespoints , \
+plot    "foo.dat" using 1:5 title 'protostuffCreateWriteRead' with linespoints , \
 	"foo.dat" using 1:7 title 'protobufCreateWriteRead' with linespoints
 

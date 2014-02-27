@@ -9,4 +9,4 @@ set title "Protostuff vs Protobuf latency for object creation and write"
 set xlabel "ByteSize"
 set ylabel "Latency"
 plot    "foo.dat" using 1:2 title 'protostuffCreateTime' with linespoints , \
-	"foo.dat" using 1:5 title 'protobufCreateTime' with linespoints
+	"foo.dat" using 1:3 title 'protobufCreateTime' with linespoints

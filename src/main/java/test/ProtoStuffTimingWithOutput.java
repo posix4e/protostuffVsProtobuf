@@ -1,5 +1,7 @@
 package test;
 
+import com.dyuproject.protostuff.LinkedBuffer;
+import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.google.protobuf.ByteString;
 
 import java.io.ByteArrayInputStream;
@@ -11,6 +13,8 @@ import java.nio.ByteBuffer;
 
 public class ProtoStuffTimingWithOutput {
 
+  final LinkedBuffer linkedBuffer = LinkedBuffer.allocate(1024);
+
   public static void main(String args[]) throws IOException, ClassNotFoundException {
     int max_byte_size = 1024 * 1024 * 16;
     int repeated_runs = 10;
@@ -21,67 +25,107 @@ public class ProtoStuffTimingWithOutput {
 
     ProtoStuffTimingWithOutput protoStuffTimingWithOutput = new ProtoStuffTimingWithOutput();
 
+    int warm_up_runs = 100;
+    for (int i = 1; i < warm_up_runs; i++) {
+      protoStuffTimingWithOutput.comparisonTest(16, 10, false);
+    }
+
     for (int i = 1; i < max_byte_size; i *= 2) {
       for (int j = 0; j < repeated_runs; j++) {
         double pert = (j * .1) + 1;
         int pertCapacity = Double.valueOf(Math.ceil(pert * i)).intValue();
-        protoStuffTimingWithOutput.comparisonTest(pertCapacity, 5);
+        protoStuffTimingWithOutput.comparisonTest(pertCapacity, 10, true);
       }
     }
   }
 
-  private void comparisonTest(int capacity, int runs) throws IOException, ClassNotFoundException {
+  private void comparisonTest(final int capacity, final int runs, final boolean output)
+      throws IOException, ClassNotFoundException {
+    ByteBuffer buffer = ByteBuffer.allocate(capacity);
+    if (output) {
+      System.out.print(capacity + " \t");
+    }
+    benchmarkCreateTime(runs, buffer, output);
+    benchmarkReadWriteTime(runs, capacity, buffer, output);
+  }
+
+  private void benchmarkReadWriteTime(final int runs, final int capacity, final ByteBuffer buffer, boolean output)
+      throws IOException, ClassNotFoundException {
 
     ByteArrayOutputStream dataOutputStream;
     ObjectOutputStream objectOutputStream;
 
-    ByteBuffer buffer = ByteBuffer.allocate(capacity);
     dataOutputStream = new ByteArrayOutputStream(capacity * 2);
     objectOutputStream = new ObjectOutputStream(dataOutputStream);
 
-    System.out.print(capacity + " \t");
-
+    // Protostuff
+    BigBlob1 blob1 = new BigBlob1(buffer);
     long begin = System.nanoTime();
+
+    for (int i = 0; i != runs; i++) {
+      testProtostuffWriteTime(blob1, objectOutputStream);
+    }
+
+    if (output) {
+      System.out.print(System.nanoTime() - begin + "\t");
+    }
+
+    // Point output to input
+    ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(dataOutputStream.toByteArray()));
+
+    begin = System.nanoTime();
+    for (int i = 0; i != runs; i++) {
+      testProtostuffReadTime(objectInputStream, linkedBuffer);
+    }
+    if (output) {
+      System.out.print(System.nanoTime() - begin + "\t");
+    }
+
+    // Protobuf
+    dataOutputStream = new ByteArrayOutputStream(capacity * 2);
+    objectOutputStream = new ObjectOutputStream(dataOutputStream);
+
+    BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(ByteString.copyFrom(buffer.array())).build();
+
+    begin = System.nanoTime();
+    for (int i = 0; i != runs; i++) {
+      testGoogleProtobufWriteTime(blob2, objectOutputStream);
+    }
+    if (output) {
+      System.out.print(System.nanoTime() - begin + "\t");
+    }
+    // Point output to input
+    objectInputStream = new ObjectInputStream(new ByteArrayInputStream(dataOutputStream.toByteArray()));
+
+    begin = System.nanoTime();
+    for (int i = 0; i != runs; i++) {
+      testProtobufReadTime(objectInputStream);
+    }
+    if (output) {
+      System.out.println(System.nanoTime() - begin);
+    }
+  }
+
+  private void benchmarkCreateTime(final int runs, final ByteBuffer buffer, final boolean output) throws IOException {
+    long begin;
+
+    begin = System.nanoTime();
     for (int i = 0; i != runs; i++) {
       testProtostuffCreateTime(buffer);
     }
-    System.out.print(System.nanoTime() - begin + "\t");
 
-    begin = System.nanoTime();
-    for (int i = 0; i != runs; i++) {
-      testProtostuffCreateWriteTime(buffer, dataOutputStream, objectOutputStream);
+    if (output) {
+      System.out.print(System.nanoTime() - begin + "\t");
     }
-    System.out.print(System.nanoTime() - begin + "\t");
-    dataOutputStream = new ByteArrayOutputStream(capacity * 2);
-    objectOutputStream = new ObjectOutputStream(dataOutputStream);
-
-    begin = System.nanoTime();
-    for (int i = 0; i != runs; i++) {
-      testProtostuffCreateWriteReadTime(buffer, dataOutputStream, objectOutputStream);
-    }
-    System.out.print(System.nanoTime() - begin + "\t");
-    dataOutputStream = new ByteArrayOutputStream(capacity * 2);
-    objectOutputStream = new ObjectOutputStream(dataOutputStream);
 
     begin = System.nanoTime();
     for (int i = 0; i != runs; i++) {
       testGoogleProtobufCreateTime(buffer);
     }
-    System.out.print(System.nanoTime() - begin + "\t");
 
-    begin = System.nanoTime();
-    for (int i = 0; i != runs; i++) {
-      testGoogleProtobufCreateWriteTime(buffer, dataOutputStream, objectOutputStream);
+    if (output) {
+      System.out.print(System.nanoTime() - begin + "\t");
     }
-    System.out.print(System.nanoTime() - begin + "\t");
-    dataOutputStream = new ByteArrayOutputStream(capacity * 2);
-    objectOutputStream = new ObjectOutputStream(dataOutputStream);
-
-    begin = System.nanoTime();
-    for (int i = 0; i != runs; i++) {
-      testProtobufCreateWriteReadTime(buffer, dataOutputStream, objectOutputStream);
-    }
-    System.out.println(System.nanoTime() - begin);
   }
 
   private void testGoogleProtobufCreateTime(final ByteBuffer buffer) {
@@ -92,43 +136,22 @@ public class ProtoStuffTimingWithOutput {
     new BigBlob1(buffer);
   }
 
-  private void testProtostuffCreateWriteTime(final ByteBuffer buffer,
-                                             final ByteArrayOutputStream dataOutputStream,
-                                             final ObjectOutputStream objectOutputStream) throws IOException {
-    BigBlob1 blob1 = new BigBlob1(buffer);
+  private void testProtostuffWriteTime(final BigBlob1 blob1,
+                                       final ObjectOutputStream objectOutputStream) throws IOException {
     objectOutputStream.writeObject(blob1);
-    objectOutputStream.flush();
-    dataOutputStream.flush();
   }
 
-  private void testGoogleProtobufCreateWriteTime(final ByteBuffer buffer,
-                                                 final ByteArrayOutputStream dataOutputStream,
-                                                 final ObjectOutputStream objectOutputStream) throws IOException {
-    ByteString blobString = ByteString.copyFrom(buffer.array());
-    BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(blobString).build();
+  private void testGoogleProtobufWriteTime(final BigBlob.BigBlob2 blob2,
+                                           final ObjectOutputStream objectOutputStream) throws IOException {
     objectOutputStream.writeObject(blob2);
-    objectOutputStream.flush();
-    dataOutputStream.flush();
   }
 
-  private void testProtostuffCreateWriteReadTime(final ByteBuffer buffer,
-                                                 final ByteArrayOutputStream dataOutputStream,
-                                                 ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-    BigBlob1 blob1 = new BigBlob1(buffer);
-    objectOutputStream.writeObject(blob1);
-    ByteArrayInputStream inputStream = new ByteArrayInputStream(dataOutputStream.toByteArray());
-    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    blob1 = (BigBlob1) objectInputStream.readObject();
+  private void testProtostuffReadTime(final ObjectInputStream inputStream,
+                                      final LinkedBuffer linkedBuffer) throws IOException, ClassNotFoundException {
+    ProtobufIOUtil.mergeFrom(inputStream, new BigBlob1(), BigBlob1.getSchema(), linkedBuffer);
   }
 
-  private void testProtobufCreateWriteReadTime(final ByteBuffer buffer,
-                                               final ByteArrayOutputStream dataOutputStream,
-                                               final ObjectOutputStream objectOutputStream) throws IOException {
-    ByteString blobString = ByteString.copyFrom(buffer.array());
-    BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(blobString).build();
-    objectOutputStream.writeObject(blob2);
-    ByteArrayInputStream inputStream = new ByteArrayInputStream(dataOutputStream.toByteArray());
-    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-    blob2 = BigBlob.BigBlob2.parseDelimitedFrom(objectInputStream);
+  private void testProtobufReadTime(final ObjectInputStream inputStream) throws IOException {
+    BigBlob.BigBlob2.parseDelimitedFrom(inputStream);
   }
 }
