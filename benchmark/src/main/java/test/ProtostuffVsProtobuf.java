@@ -1,26 +1,36 @@
 package test;
 
+import com.dyuproject.protostuff.ByteArrayInput;
 import com.dyuproject.protostuff.ByteBufferInput;
+import com.dyuproject.protostuff.CodedInput;
+import com.dyuproject.protostuff.Input;
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.LowCopyProtobufOutput;
+import com.dyuproject.protostuff.Pipe;
+import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.CodedInputStream;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
+import sun.misc.IOUtils;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Random;
 
 public class ProtostuffVsProtobuf {
 
-  static int max_byte_size = 1024 * 1024 * 16;
+  static int max_byte_size = 1024 * 1024 * 32;
   static byte[] random_bytes = new byte[max_byte_size];
-  final LinkedBuffer linkedBuffer = LinkedBuffer.allocate(1024);
 
   public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
 
@@ -37,14 +47,14 @@ public class ProtostuffVsProtobuf {
 
     int warm_up_runs = 100;
     for (int i = 1; i < warm_up_runs; i++) {
-      protoStuffTimingWithOutput.comparisonTest(warm_up_runs * 10, 100, false);
+      protoStuffTimingWithOutput.comparisonTest(10, warm_up_runs , false);
     }
 
     for (int i = 1; i < max_byte_size; i *= 2) {
       for (int j = 0; j < repeated_runs; j++) {
-        double pert = (j * .1) + 1;
+        double pert = (j * .01) + 1;
         int pertCapacity = Double.valueOf(Math.ceil(pert * i)).intValue();
-        protoStuffTimingWithOutput.comparisonTest(pertCapacity, 100, true);
+        protoStuffTimingWithOutput.comparisonTest(pertCapacity, 10, true);
       }
     }
   }
@@ -80,21 +90,23 @@ public class ProtostuffVsProtobuf {
       System.out.print(System.nanoTime() - begin + "\t");
     }
 
-    List<ByteBuffer> byteBuffers = lowCopyProtobufOutput.buffer.finish();
-    ByteBuf pooledBuffer = Unpooled.wrappedBuffer(byteBuffers.toArray(new ByteBuffer[byteBuffers.size()]));
-    ByteBufferInput byteBufferInput = new ByteBufferInput(pooledBuffer.nioBuffer(), false);
-
     begin = System.nanoTime();
+
+
+    CodedInput [] byteBufferInputs =  new CodedInput[runs];
+    for (int i = 0 ; i != runs; i++){
+      byte[] blobBytes = ProtobufIOUtil.toByteArray(blob1, BigBlob1.getSchema(), LinkedBuffer.allocate(256));
+      byteBufferInputs[i] = CodedInput.newInstance(blobBytes);
+    }
+
     for (int i = 0; i != runs; i++) {
-      testProtostuffReadTime(byteBufferInput);
+      testProtostuffReadTime(byteBufferInputs[i]);
     }
     if (output) {
       System.out.print(System.nanoTime() - begin + "\t");
     }
 
-    linkedBuffer.clear();
     // Protobuf
-
     BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(ByteString.copyFrom(buffer.array())).build();
     ByteArrayOutputStream dataOutputStream = new ByteArrayOutputStream();
     begin = System.nanoTime();
@@ -159,9 +171,10 @@ public class ProtostuffVsProtobuf {
     blob2.writeDelimitedTo(outputStream);
   }
 
-  private void testProtostuffReadTime(final ByteBufferInput input) throws IOException, ClassNotFoundException {
+  private void testProtostuffReadTime(final CodedInput input) throws IOException, ClassNotFoundException {
+    BigBlob1 blob = new BigBlob1();
+    BigBlob1.getSchema().mergeFrom(input, blob);
 
-    BigBlob1.getSchema().mergeFrom(input, BigBlob1.DEFAULT_INSTANCE);
   }
 
   private void testProtobufReadTime(final InputStream inputStream) throws IOException {

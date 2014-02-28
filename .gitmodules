@@ -1,0 +1,4 @@
+[submodule "protostuff"]
+	path = protostuff
+	url = https://github.com/protostuff/protostuff.git
+	branch = master

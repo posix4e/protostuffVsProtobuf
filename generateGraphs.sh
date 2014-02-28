@@ -1,8 +1,10 @@
 #!/bin/sh
 set -ex
-mvn assembly:assembly
-java -cp target/protostuffVsProtobuf-1.0-SNAPSHOT-jar-with-dependencies.jar test.ProtostuffVsProtobuf> out
-cp out foo.dat
+cd benchmark 
+mvn assembly:assembly 
+java -Xmx2G -cp target/benchmark-1.1-SNAPSHOT-jar-with-dependencies.jar test.ProtostuffVsProtobuf> out
+cp out ../foo.dat
+cd ..
 for i in create.gnuplot  createRead.gnuplot  createReadWrite.gnuplot
-	do gnuplot $i
+	do gnuplot $i || /bin/true
 done

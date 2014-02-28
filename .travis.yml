@@ -1,0 +1,7 @@
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq gnuplot-nox
+ - sudo apt-get install -qq gnuplot
+ - sudo apt-get install -qq imagemagick
+language: java
+script: ./generateGraphs.sh
