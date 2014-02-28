@@ -2,7 +2,7 @@
 set term png
 set output 'createwrite.png'
 set   autoscale                        # scale axes automatically
-unset log                              # remove any log-scaling
+set log                              # remove any log-scaling
 set xtic auto                          # set xtics automatically
 set ytic auto                          # set ytics automatically
 set title "Protostuff vs Protobuf latency for object creation and write"
