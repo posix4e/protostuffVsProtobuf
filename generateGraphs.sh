@@ -1,5 +1,7 @@
 #!/bin/sh
 set -ex
+mvn install
+
 cd benchmark 
 mvn assembly:assembly 
 java -Xmx2G -cp target/benchmark-1.1-SNAPSHOT-jar-with-dependencies.jar test.ProtostuffVsProtobuf> out
