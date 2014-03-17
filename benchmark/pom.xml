@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>protostuffVsProtobuf</groupId>
+    <parent>
+        <groupId>protostuffVsProtobuf</groupId>
+        <artifactId>protostuffVsProtobuf</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
     <artifactId>benchmark</artifactId>
     <version>1.1-SNAPSHOT</version>
 
-    <properties>
-        <protostuff.version>1.1.0-SNAPSHOT</protostuff.version>
-        <protobuf.version>2.5.0</protobuf.version>
-
-        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
-    </properties>
     <build>
         <plugins>
             <plugin>
@@ -34,11 +33,15 @@
                         <protoModule>
                             <source>src/main/resources/</source>
                             <outputDir>target/generated-sources/protostuff</outputDir>
-                            <output>java_bean</output>
+                            <output>java_bean_primitives</output>
                             <encoding>UTF-8</encoding>
                             <options>
                                 <property>
                                     <name>generate_field_map</name>
+                                </property>
+                                <property>
+                                    <name>ByteBuffer</name>
+                                    <value>true</value>
                                 </property>
                             </options>
                         </protoModule>
@@ -91,11 +94,6 @@
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.0.15.Final</version>
         </dependency>
     </dependencies>
 

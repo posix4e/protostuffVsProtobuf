@@ -1,30 +1,17 @@
 package test;
 
-import com.dyuproject.protostuff.ByteArrayInput;
-import com.dyuproject.protostuff.ByteBufferInput;
 import com.dyuproject.protostuff.CodedInput;
-import com.dyuproject.protostuff.Input;
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.LowCopyProtobufOutput;
-import com.dyuproject.protostuff.Pipe;
 import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.CodedInputStream;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
-import io.netty.buffer.Unpooled;
-import sun.misc.IOUtils;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PushbackInputStream;
 import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.Random;
 
 public class ProtostuffVsProtobuf {
@@ -47,7 +34,7 @@ public class ProtostuffVsProtobuf {
 
     int warm_up_runs = 100;
     for (int i = 1; i < warm_up_runs; i++) {
-      protoStuffTimingWithOutput.comparisonTest(10, warm_up_runs , false);
+      protoStuffTimingWithOutput.comparisonTest(10, warm_up_runs, false);
     }
 
     for (int i = 1; i < max_byte_size; i *= 2) {
@@ -93,8 +80,8 @@ public class ProtostuffVsProtobuf {
     begin = System.nanoTime();
 
 
-    CodedInput [] byteBufferInputs =  new CodedInput[runs];
-    for (int i = 0 ; i != runs; i++){
+    CodedInput[] byteBufferInputs = new CodedInput[runs];
+    for (int i = 0; i != runs; i++) {
       byte[] blobBytes = ProtobufIOUtil.toByteArray(blob1, BigBlob1.getSchema(), LinkedBuffer.allocate(256));
       byteBufferInputs[i] = CodedInput.newInstance(blobBytes);
     }
@@ -107,7 +94,7 @@ public class ProtostuffVsProtobuf {
     }
 
     // Protobuf
-    BigBlob.BigBlob2 blob2 = BigBlob.BigBlob2.newBuilder().setBlob(ByteString.copyFrom(buffer.array())).build();
+    BigBlob.BigBlob1 blob2 = BigBlob.BigBlob1.newBuilder().setBlob(ByteString.copyFrom(buffer.array())).build();
     ByteArrayOutputStream dataOutputStream = new ByteArrayOutputStream();
     begin = System.nanoTime();
     for (int i = 0; i != runs; i++) {
@@ -152,7 +139,7 @@ public class ProtostuffVsProtobuf {
 
   private void testGoogleProtobufCreateTime(final ByteBuffer buffer) {
     ByteString blob = ByteString.copyFrom(buffer.array());
-    BigBlob.BigBlob2.Builder bigBlob2 = BigBlob.BigBlob2.newBuilder();
+    BigBlob.BigBlob1.Builder bigBlob2 = BigBlob.BigBlob1.newBuilder();
     bigBlob2.setBlob(blob);
     bigBlob2.build();
   }
@@ -166,7 +153,7 @@ public class ProtostuffVsProtobuf {
     blob1.writeTo(lowCopyProtobufOutput, blob1);
   }
 
-  private void testGoogleProtobufWriteTime(final BigBlob.BigBlob2 blob2,
+  private void testGoogleProtobufWriteTime(final BigBlob.BigBlob1 blob2,
                                            final OutputStream outputStream) throws IOException {
     blob2.writeDelimitedTo(outputStream);
   }
@@ -178,6 +165,6 @@ public class ProtostuffVsProtobuf {
   }
 
   private void testProtobufReadTime(final InputStream inputStream) throws IOException {
-    BigBlob.BigBlob2.parseDelimitedFrom(inputStream);
+    BigBlob.BigBlob1.parseDelimitedFrom(inputStream);
   }
 }

@@ -1,0 +1,17 @@
+package test;
+
+message SelfBlob {
+ optional SubGroup blob = 1;
+ required int32 testInt = 2;
+}
+
+message SubGroup {
+ repeated bytes byteGroup = 1;
+ optional SubSubGroup subSubGroupA = 2;
+ optional SubSubGroup subSubGroupB = 3;
+}
+
+message SubSubGroup {
+ required int32 testIntA = 1;
+ optional int32 testIntB = 2;
+}
